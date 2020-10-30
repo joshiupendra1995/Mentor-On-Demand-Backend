@@ -1,6 +1,7 @@
 package com.lti.app.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class AdminService {
 
 	public UserDto blockUser(String emailId) {
 		UserDto userDto = userService.findByEmailId(emailId);
-		if (userDto == null) {
+		if (Objects.isNull(userDto)) {
 			throw new InvalidUserException("invalid user");
 		}
 		userDto.setActive(false);
@@ -38,7 +39,7 @@ public class AdminService {
 
 	public MentorDto blockMentor(String emailId) {
 		MentorDto mentorDto = mentorService.findByEmailId(emailId);
-		if (mentorDto == null) {
+		if (Objects.isNull(mentorDto)) {
 			throw new InvalidUserException("invalid mentor");
 		}
 		mentorDto.setActive(false);
