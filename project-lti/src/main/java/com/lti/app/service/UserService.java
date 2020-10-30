@@ -54,7 +54,7 @@ public class UserService {
 	}
 
 	public UserDto findByEmailIdAndPassword(String emailId, String password) {
-		User user = userRepo.findByEmailId(emailId);
+		User user = userRepo.findByEmailIdAndPassword(emailId, password);
 		if (Objects.isNull(user)) {
 			return null;
 		}
