@@ -38,4 +38,15 @@ public class AdminController {
 	public MentorDto blockMentor(@PathVariable String emailId) {
 		return adminService.blockMentor(emailId);
 	}
+	
+	@PutMapping("/admin/unBlockUser/{emailId}")
+	public UserDto unBlockUser(@PathVariable String emailId) {
+		return adminService.unBlockUser(emailId);
+	}
+
+	@PutMapping("/admin/unBlockMentor/{emailId}")
+	public MentorDto unBlockMentor(@PathVariable String emailId) {
+		return adminService.unBlockMentor(emailId);
+	}
+	
 }

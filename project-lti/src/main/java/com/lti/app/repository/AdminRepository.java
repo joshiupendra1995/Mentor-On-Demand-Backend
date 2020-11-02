@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import com.lti.app.model.Admin;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Integer>{
+public interface AdminRepository extends JpaRepository<Admin, Integer> {
+
+	Admin findByEmailIdAndPassword(String emailId, String password);
 
 }

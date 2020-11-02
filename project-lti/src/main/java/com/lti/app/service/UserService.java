@@ -54,12 +54,16 @@ public class UserService {
 	}
 
 	public UserDto findByEmailIdAndPassword(String emailId, String password) {
-		User user = userRepo.findByEmailId(emailId);
+		User user = userRepo.findByEmailIdAndPassword(emailId, password);
 		if (Objects.isNull(user)) {
 			return null;
 		}
 		return userMapper.getBO(user);
 
+	}
+
+	public UserDto unBlockUser(UserDto userDto) {
+		return userMapper.getBO(userRepo.save(userMapper.getModelForAdmin(userDto)));
 	}
 
 }
