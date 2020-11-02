@@ -39,12 +39,12 @@ public class AdminController {
 		return adminService.blockMentor(emailId);
 	}
 	
-	@PutMapping("/admin/blockUser/{emailId}")
+	@PutMapping("/admin/unBlockUser/{emailId}")
 	public UserDto unBlockUser(@PathVariable String emailId) {
 		return adminService.unBlockUser(emailId);
 	}
 
-	@PutMapping("/admin/blockMentor/{emailId}")
+	@PutMapping("/admin/unBlockMentor/{emailId}")
 	public MentorDto unBlockMentor(@PathVariable String emailId) {
 		return adminService.unBlockMentor(emailId);
 	}
