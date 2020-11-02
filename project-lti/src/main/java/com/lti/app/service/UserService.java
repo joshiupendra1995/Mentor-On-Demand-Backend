@@ -62,4 +62,8 @@ public class UserService {
 
 	}
 
+	public UserDto unBlockUser(UserDto userDto) {
+		return userMapper.getBO(userRepo.save(userMapper.getModelForAdmin(userDto)));
+	}
+
 }

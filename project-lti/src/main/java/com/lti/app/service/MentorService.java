@@ -58,8 +58,12 @@ public class MentorService {
 	public MentorDto findByEmailIdAndPassword(String emailId, String password) {
 		Mentor mentor = mentorRepo.findByEmailIdAndPassword(emailId, password);
 		if (Objects.isNull(mentor)) {
-			throw new InvalidUserException(Constant.INVALID_USR_MSG);
+			return null;
 		}
 		return mentorMapper.getBO(mentor);
+	}
+
+	public MentorDto unBlockMentor(MentorDto mentorDto) {
+		return mentorMapper.getBO(mentorRepo.save(mentorMapper.getModelForAdmin(mentorDto)));
 	}
 }
