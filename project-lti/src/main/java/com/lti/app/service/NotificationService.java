@@ -63,7 +63,7 @@ public class NotificationService {
 		model.put("content", "You have your " + notificationDto.getCourseName() + " course scheduled with "
 				+ notificationDto.getMentorName() + "\nplease get in touch with him.");
 		model.put("signature", "ADMIN");
-		model.put("logo.png", image.getFilename());
+		model.put("logo", image.getFilename());
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
