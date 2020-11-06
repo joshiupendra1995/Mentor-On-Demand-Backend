@@ -3,6 +3,7 @@ package com.lti.app.service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -12,15 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
+
+import com.lti.app.dto.NotificationDto;
+import com.lti.app.mapper.NotificationMapper;
+import com.lti.app.model.Notification;
+import com.lti.app.repository.NotificationRepository;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -33,6 +39,12 @@ public class NotificationService {
 	private JavaMailSender javaMailSender;
 
 	@Autowired
+	private NotificationRepository notificationRepository;
+
+	@Autowired
+	private NotificationMapper mapper;
+
+	@Autowired
 	@Qualifier("emailConfigBean")
 	private Configuration emailConfig;
 
@@ -42,14 +54,14 @@ public class NotificationService {
 	@Value("classpath:static/images/LTI.png")
 	private Resource image;
 
-	public String sendNotification(String userName, String mentorName, String courseName, String emailId)
+	public String sendNotification(NotificationDto notificationDto)
 			throws MessagingException, IOException, TemplateException {
 
 		Map<String, String> model = new HashMap<>();
-		model.put("userName", userName);
+		model.put("userName", notificationDto.getUserName());
 		model.put("location", "Pune,Maharashtra");
-		model.put("content", "You have your " + courseName + " course scheduled with " + mentorName
-				+ "\nplease get in touch with him.");
+		model.put("content", "You have your " + notificationDto.getCourseName() + " course scheduled with "
+				+ notificationDto.getMentorName() + "\nplease get in touch with him.");
 		model.put("signature", "ADMIN");
 		model.put("logo.png", image.getFilename());
 
@@ -66,10 +78,20 @@ public class NotificationService {
 		mimeMessageHelper.setSubject("NoReply:Course Scheduled");
 		mimeMessageHelper.setText(html, true);
 		mimeMessageHelper.setFrom(from);
-		mimeMessageHelper.setReplyTo(emailId);
-		mimeMessageHelper.setTo(emailId);
+		mimeMessageHelper.setReplyTo(notificationDto.getEmailId());
+		mimeMessageHelper.setTo(notificationDto.getEmailId());
 		javaMailSender.send(message);
+		notificationRepository.save(mapper.getModel(notificationDto));
 		return "Message Sent!!";
+	}
+
+	public List<NotificationDto> getNotificationDetails(String emailId) {
+		List<Notification> list = notificationRepository.findByEmailId(emailId);
+		if (list == null || list.isEmpty()) {
+			throw new EmptyResultDataAccessException("No Record Found", 1);
+		}
+		return mapper.getBOList(list);
+
 	}
 
 }
