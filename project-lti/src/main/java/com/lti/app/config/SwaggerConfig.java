@@ -1,4 +1,4 @@
-package com.lti.app.swagger.config;
+package com.lti.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
