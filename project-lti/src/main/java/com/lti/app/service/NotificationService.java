@@ -54,7 +54,7 @@ public class NotificationService {
 	@Value("classpath:static/images/LTI.png")
 	private Resource image;
 
-	public String sendNotification(NotificationDto notificationDto)
+	public NotificationDto sendNotification(NotificationDto notificationDto)
 			throws MessagingException, IOException, TemplateException {
 
 		Map<String, String> model = new HashMap<>();
@@ -81,8 +81,7 @@ public class NotificationService {
 		mimeMessageHelper.setReplyTo(notificationDto.getEmailId());
 		mimeMessageHelper.setTo(notificationDto.getEmailId());
 		javaMailSender.send(message);
-		notificationRepository.save(mapper.getModel(notificationDto));
-		return "Message Sent!!";
+		return mapper.getBO(notificationRepository.save(mapper.getModel(notificationDto)));
 	}
 
 	public List<NotificationDto> getNotificationDetails(String emailId) {
