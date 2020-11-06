@@ -26,7 +26,7 @@ public class NotificationController {
 	private NotificationService notificationService;
 
 	@PostMapping("/sendNotification")
-	public String sendNotification(@RequestBody NotificationDto notificationDto)
+	public NotificationDto sendNotification(@RequestBody NotificationDto notificationDto)
 			throws MessagingException, IOException, TemplateException {
 		return notificationService.sendNotification(notificationDto);
 
