@@ -76,7 +76,7 @@ public class AdminService {
 
 	public AdminDto findByEmailIdAndPassword(String emailId, String password) {
 		Admin admin = adminRepository.findByEmailIdAndPassword(emailId, password);
-		if(Objects.isNull(admin)) {
+		if (Objects.isNull(admin)) {
 			throw new InvalidUserException(Constant.INVALID_USR_MSG);
 		}
 		return adminMapper.getBO(admin);
