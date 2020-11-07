@@ -52,7 +52,7 @@ public class NotificationService {
 		Map<String, String> model = new HashMap<>();
 		model.put("userName", notificationDto.getUserName());
 		model.put("location", "Pune,Maharashtra");
-		model.put("content", "You have your " + notificationDto.getCourseName() + " course is scheduled with "
+		model.put("content", "You have your " + notificationDto.getCourseName() + " course scheduled with "
 				+ notificationDto.getMentorName() + "\nplease get in touch with him.");
 		model.put("signature", "ADMIN");
 		MimeMessage message = javaMailSender.createMimeMessage();
