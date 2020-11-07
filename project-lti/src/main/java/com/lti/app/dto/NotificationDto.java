@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NotificationDto {
 	
+	private Integer id;
+	
 	private String emailId;
 
 	private String userName;

@@ -21,7 +21,7 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
     <tr>
         <td align="center" bgcolor="#78ab46" style="padding: 40px 0 30px 0;">
-            <img src="/static/images/LTI.png" alt="https://www.adminhelpdesk.com" style="display: block;" />
+            <img src="https://img.icons8.com/fluent/96/000000/microsoft-admin.png" style="display: block;" />
         </td>
     </tr>
     <tr>
