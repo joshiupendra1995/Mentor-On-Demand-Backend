@@ -15,6 +15,8 @@ import com.lti.app.mapper.MentorMapper;
 import com.lti.app.model.Mentor;
 import com.lti.app.repository.MentorRepository;
 
+import javassist.bytecode.DuplicateMemberException;
+
 @Service
 public class MentorService {
 
@@ -35,7 +37,10 @@ public class MentorService {
 		return mentorMapper.getBOList(mentorRepo.findByCourseExpertiseContainingIgnoreCase(courseName));
 	}
 
-	public MentorDto createMentor(MentorDto mentorDto) {
+	public MentorDto createMentor(MentorDto mentorDto) throws DuplicateMemberException {
+		if (mentorRepo.findByEmailId(mentorDto.getEmailId()) != null) {
+             throw new DuplicateMemberException(Constant.DUPLICATE_MEMBER);
+		}
 		return mentorMapper.getBO(mentorRepo.save(mentorMapper.getModel(mentorDto)));
 	}
 
@@ -46,7 +51,7 @@ public class MentorService {
 	public MentorDto findByEmailId(String emailId) {
 		Mentor mentor = mentorRepo.findByEmailId(emailId);
 		if (Objects.isNull(mentor)) {
-			throw new InvalidUserException(Constant.INVALID_USR_MSG);
+			throw new InvalidUserException(Constant.INVALID_USR);
 		}
 		return mentorMapper.getBO(mentor);
 	}

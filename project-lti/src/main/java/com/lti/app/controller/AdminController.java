@@ -1,6 +1,9 @@
 package com.lti.app.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lti.app.dto.MentorDto;
 import com.lti.app.dto.UserDto;
 import com.lti.app.service.AdminService;
+
+import freemarker.template.TemplateException;
 
 @RestController
 public class AdminController {
@@ -30,12 +35,13 @@ public class AdminController {
 	}
 
 	@PutMapping("/admin/blockUser/{emailId}")
-	public UserDto blockUser(@PathVariable String emailId) {
+	public UserDto blockUser(@PathVariable String emailId) throws MessagingException, IOException, TemplateException {
 		return adminService.blockUser(emailId);
 	}
 
 	@PutMapping("/admin/blockMentor/{emailId}")
-	public MentorDto blockMentor(@PathVariable String emailId) {
+	public MentorDto blockMentor(@PathVariable String emailId)
+			throws MessagingException, IOException, TemplateException {
 		return adminService.blockMentor(emailId);
 	}
 

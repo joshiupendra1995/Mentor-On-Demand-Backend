@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lti.app.dto.UserDto;
 import com.lti.app.service.UserService;
 
+import javassist.bytecode.DuplicateMemberException;
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class UserController {
 
 	@Autowired
@@ -27,8 +31,13 @@ public class UserController {
 	}
 
 	@PostMapping("/user")
-	public UserDto createUser(@RequestBody UserDto userDto) {
-		return userService.createUser(userDto);
+	public UserDto createUser(@RequestBody UserDto userDto) throws DuplicateMemberException {
+		try {
+			return userService.createUser(userDto);
+		} catch (DuplicateMemberException e) {
+			log.error("creation failed{}", e);
+			throw e;
+		}
 	}
 
 	@PutMapping("/user")

@@ -78,4 +78,24 @@ public class NotificationService {
 
 	}
 
+	public void sendNotification(String emailId, String firstName)
+			throws MessagingException, IOException, TemplateException {
+		Map<String, String> model = new HashMap<>();
+		model.put("userName", firstName);
+		model.put("location", "Pune,Maharashtra");
+		model.put("content","\nYou are blocked by the admin due to some inactivity from your side.");
+		model.put("signature", "ADMIN");
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
+				MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+		Template template = emailConfig.getTemplate("email.ftl");
+		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+		mimeMessageHelper.setSubject("Admin Notification:Blocked You");
+		mimeMessageHelper.setText(html, true);
+		mimeMessageHelper.setFrom(from);
+		mimeMessageHelper.setReplyTo(emailId);
+		mimeMessageHelper.setTo(emailId);
+		javaMailSender.send(message);
+	}
+
 }

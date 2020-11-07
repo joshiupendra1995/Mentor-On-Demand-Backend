@@ -12,6 +12,8 @@ import com.lti.app.mapper.UserMapper;
 import com.lti.app.model.User;
 import com.lti.app.repository.UserRepository;
 
+import javassist.bytecode.DuplicateMemberException;
+
 @Service
 public class UserService {
 	@Autowired
@@ -20,8 +22,10 @@ public class UserService {
 	@Autowired
 	private UserMapper userMapper;
 
-	public UserDto createUser(UserDto userDto) {
-
+	public UserDto createUser(UserDto userDto) throws DuplicateMemberException {
+		if (userRepo.findByEmailId(userDto.getEmailId()) != null) {
+			throw new DuplicateMemberException(Constant.DUPLICATE_MEMBER);
+		}
 		return userMapper.getBO(userRepo.save(userMapper.getModel(userDto)));
 
 	}

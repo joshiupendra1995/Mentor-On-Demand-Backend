@@ -9,4 +9,5 @@ public class Constant {
 
 	public static final String INVALID_USR_MSG = "username or password is not valid!!";
 	public static final String INVALID_USR = "invalid user";
+	public static final String DUPLICATE_MEMBER = "Member with this email id already exists!!";
 }

@@ -1,7 +1,10 @@
 package com.lti.app.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +12,18 @@ import org.springframework.stereotype.Service;
 import com.lti.app.constants.Constant;
 import com.lti.app.dto.AdminDto;
 import com.lti.app.dto.MentorDto;
+import com.lti.app.dto.NotificationDto;
 import com.lti.app.dto.UserDto;
 import com.lti.app.exception.InvalidUserException;
 import com.lti.app.mapper.AdminMapper;
 import com.lti.app.model.Admin;
 import com.lti.app.repository.AdminRepository;
 
+import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AdminService {
 
 	@Autowired
@@ -30,6 +38,9 @@ public class AdminService {
 	@Autowired
 	private AdminMapper adminMapper;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	public List<MentorDto> getMentors(String courseName) {
 		return mentorService.getMentors(courseName);
 	}
@@ -38,22 +49,28 @@ public class AdminService {
 		return userService.getAllUsers();
 	}
 
-	public UserDto blockUser(String emailId) {
+	public UserDto blockUser(String emailId) throws MessagingException, IOException, TemplateException {
 		UserDto userDto = userService.findByEmailId(emailId);
 		if (Objects.isNull(userDto)) {
 			throw new InvalidUserException(Constant.INVALID_USR);
 		}
 		userDto.setActive(false);
-		return userService.blockUser(userDto);
+		UserDto user = userService.blockUser(userDto);
+		log.info("user blocked{}", user);
+		notificationService.sendNotification(user.getEmailId(), user.getFirstName());
+		return user;
 	}
 
-	public MentorDto blockMentor(String emailId) {
+	public MentorDto blockMentor(String emailId) throws MessagingException, IOException, TemplateException {
 		MentorDto mentorDto = mentorService.findByEmailId(emailId);
 		if (Objects.isNull(mentorDto)) {
 			throw new InvalidUserException(Constant.INVALID_USR);
 		}
 		mentorDto.setActive(false);
-		return mentorService.blockMentor(mentorDto);
+		MentorDto mentor = mentorService.blockMentor(mentorDto);
+		log.info("mentor blocked{}", mentor);
+		notificationService.sendNotification(mentor.getEmailId(), mentor.getFirstName());
+		return mentor;
 	}
 
 	public UserDto unBlockUser(String emailId) {

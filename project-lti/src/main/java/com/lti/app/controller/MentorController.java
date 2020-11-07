@@ -14,15 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lti.app.dto.MentorDto;
 import com.lti.app.service.MentorService;
 
+import javassist.bytecode.DuplicateMemberException;
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class MentorController {
 
 	@Autowired
 	private MentorService mentorService;
 
 	@PostMapping("/mentor")
-	public MentorDto createMentor(@RequestBody MentorDto mentorDto) {
-		return mentorService.createMentor(mentorDto);
+	public MentorDto createMentor(@RequestBody MentorDto mentorDto) throws DuplicateMemberException {
+		try {
+			return mentorService.createMentor(mentorDto);
+		} catch (DuplicateMemberException e) {
+			log.error("updation failed{}", e);
+			throw e;
+		}
 	}
 
 	@PutMapping("/mentor")

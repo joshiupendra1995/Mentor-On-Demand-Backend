@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import javassist.bytecode.DuplicateMemberException;
+
 @ControllerAdvice
 public class CustomExceptionHandler {
 
@@ -26,6 +28,13 @@ public class CustomExceptionHandler {
 		Timestamp timestamp = new Timestamp(new Date().getTime());
 		ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.SERVICE_UNAVAILABLE.value(),
 				timestamp);
+		return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
+	}
+	
+	@ExceptionHandler(DuplicateMemberException.class)
+	public final ResponseEntity<Object> handleAllDuplicateMemberExceptions(DuplicateMemberException ex, WebRequest request) {
+		Timestamp timestamp = new Timestamp(new Date().getTime());
+		ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), HttpStatus.SERVICE_UNAVAILABLE.value(), timestamp);
 		return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }
