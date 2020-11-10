@@ -51,7 +51,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/admin/unBlockMentor/{emailId}")
-	public MentorDto unBlockMentor(@PathVariable String emailId) {
+	public MentorDto unBlockMentor(@PathVariable String emailId) throws MessagingException, IOException, TemplateException {
 		return adminService.unBlockMentor(emailId);
 	}
 
