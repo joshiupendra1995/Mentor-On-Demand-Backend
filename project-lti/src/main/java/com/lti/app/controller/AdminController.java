@@ -46,7 +46,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/admin/unBlockUser/{emailId}")
-	public UserDto unBlockUser(@PathVariable String emailId) {
+	public UserDto unBlockUser(@PathVariable String emailId) throws MessagingException, IOException, TemplateException {
 		return adminService.unBlockUser(emailId);
 	}
 

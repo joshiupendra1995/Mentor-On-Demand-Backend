@@ -23,9 +23,12 @@ import com.lti.app.mapper.NotificationMapper;
 import com.lti.app.model.Notification;
 import com.lti.app.repository.NotificationRepository;
 
+import freemarker.core.ParseException;
 import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 @Service
 public class NotificationService {
@@ -83,7 +86,27 @@ public class NotificationService {
 		Map<String, String> model = new HashMap<>();
 		model.put("userName", firstName);
 		model.put("location", "Pune,Maharashtra");
-		model.put("content","\nYou are blocked by the admin due to some inactivity from your side.");
+		model.put("content", "\nYou are blocked by the admin due to some inactivity from your side.");
+		model.put("signature", "ADMIN");
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
+				MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+		Template template = emailConfig.getTemplate("email.ftl");
+		String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+		mimeMessageHelper.setSubject("Admin Notification:Blocked You");
+		mimeMessageHelper.setText(html, true);
+		mimeMessageHelper.setFrom(from);
+		mimeMessageHelper.setReplyTo(emailId);
+		mimeMessageHelper.setTo(emailId);
+		javaMailSender.send(message);
+	}
+
+	public void sendUnblockedNotification(String emailId, String firstName)
+			throws MessagingException, IOException, TemplateException {
+		Map<String, String> model = new HashMap<>();
+		model.put("userName", firstName);
+		model.put("location", "Pune,Maharashtra");
+		model.put("content", "\nYou are unblocked by the admin , you can now login to the portal.");
 		model.put("signature", "ADMIN");
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,

@@ -73,22 +73,28 @@ public class AdminService {
 		return mentor;
 	}
 
-	public UserDto unBlockUser(String emailId) {
+	public UserDto unBlockUser(String emailId) throws MessagingException, IOException, TemplateException {
 		UserDto userDto = userService.findByEmailId(emailId);
 		if (Objects.isNull(userDto)) {
 			throw new InvalidUserException(Constant.INVALID_USR);
 		}
 		userDto.setActive(true);
-		return userService.unBlockUser(userDto);
+		UserDto user = userService.unBlockUser(userDto);
+		log.info("user unbocked{}", user);
+		notificationService.sendUnblockedNotification(user.getEmailId(), user.getFirstName());
+		return user;
 	}
 
-	public MentorDto unBlockMentor(String emailId) {
+	public MentorDto unBlockMentor(String emailId) throws MessagingException, IOException, TemplateException {
 		MentorDto mentorDto = mentorService.findByEmailId(emailId);
 		if (Objects.isNull(mentorDto)) {
 			throw new InvalidUserException(Constant.INVALID_USR);
 		}
 		mentorDto.setActive(true);
-		return mentorService.unBlockMentor(mentorDto);
+		MentorDto mentor = mentorService.unBlockMentor(mentorDto);
+		log.info("mentor unblocked{}", mentor);
+		notificationService.sendUnblockedNotification(mentor.getEmailId(), mentor.getFirstName());
+		return mentor;
 	}
 
 	public AdminDto findByEmailIdAndPassword(String emailId, String password) {
