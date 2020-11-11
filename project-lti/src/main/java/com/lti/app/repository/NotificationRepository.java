@@ -6,8 +6,10 @@ import org.springframework.stereotype.Repository;
 import com.lti.app.model.Notification;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<Notification, Integer>{
+public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
-	List<Notification> findByEmailId(String emailId);
+	List<Notification> findByMentorId(String mentorId);
+
+	List<Notification> findByUserId(String userId);
 
 }

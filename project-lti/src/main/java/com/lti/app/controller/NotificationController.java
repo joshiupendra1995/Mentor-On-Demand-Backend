@@ -36,4 +36,9 @@ public class NotificationController {
 	public List<NotificationDto> getNotificationDetails(@PathVariable String emailId) {
 		return notificationService.getNotificationDetails(emailId);
 	}
+	
+	@GetMapping("/user/getNotificationDetails/{emailId}")
+	public List<NotificationDto> getNotificationDetailsForUser(@PathVariable String emailId){
+		return notificationService.getNotificationDetailsForUser(emailId);
+	}
 }

@@ -12,20 +12,19 @@ import com.lti.app.model.Notification;
 public class NotificationMapper {
 
 	public Notification getModel(NotificationDto dto) {
-		return new Notification(dto.getId(), dto.getEmailId(), dto.getUserName(), dto.getMentorName(),
-				dto.getCourseName());
+		return new Notification(dto.getId(), dto.getMentorId(), dto.getUserId(), dto.getUserName(), dto.getMentorName(),
+				dto.getCourseName(), dto.isFlag());
 	}
 
 	public NotificationDto getBO(Notification notification) {
-		return new NotificationDto(notification.getId(), notification.getEmailId(), notification.getUserName(),
-				notification.getMentorName(), notification.getCourseName());
+		return new NotificationDto(notification.getId(), notification.getMentorId(), notification.getUserId(),
+				notification.getUserName(), notification.getMentorName(), notification.getCourseName(),
+				notification.isFlag());
 	}
 
 	public List<NotificationDto> getBOList(List<Notification> list) {
 		List<NotificationDto> dtoList = new ArrayList<>();
-		list.forEach(notification -> {
-			dtoList.add(getBO(notification));
-		});
+		list.forEach(notification -> dtoList.add(getBO(notification)));
 		return dtoList;
 	}
 }

@@ -8,14 +8,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationDto {
-	
+
 	private Integer id;
-	
-	private String emailId;
+
+	private String mentorId;
+
+	private String userId;
 
 	private String userName;
-	
+
 	private String mentorName;
-	
+
 	private String courseName;
+	
+	private boolean flag;
 }

@@ -18,12 +18,16 @@ public class Notification {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	private String emailId;
+
+	private String mentorId;
+
+	private String userId;
 
 	private String userName;
-	
+
 	private String mentorName;
-	
+
 	private String courseName;
+	
+	private boolean flag;
 }

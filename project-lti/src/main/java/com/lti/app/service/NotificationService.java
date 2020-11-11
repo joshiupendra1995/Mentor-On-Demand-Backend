@@ -66,14 +66,14 @@ public class NotificationService {
 		mimeMessageHelper.setSubject("Admin Notification:Training Scheduled");
 		mimeMessageHelper.setText(html, true);
 		mimeMessageHelper.setFrom(from);
-		mimeMessageHelper.setReplyTo(notificationDto.getEmailId());
-		mimeMessageHelper.setTo(notificationDto.getEmailId());
+		mimeMessageHelper.setReplyTo(notificationDto.getMentorId());
+		mimeMessageHelper.setTo(notificationDto.getMentorId());
 		javaMailSender.send(message);
 		return mapper.getBO(notificationRepository.save(mapper.getModel(notificationDto)));
 	}
 
-	public List<NotificationDto> getNotificationDetails(String emailId) {
-		List<Notification> list = notificationRepository.findByEmailId(emailId);
+	public List<NotificationDto> getNotificationDetails(String mentorId) {
+		List<Notification> list = notificationRepository.findByMentorId(mentorId);
 		if (list == null || list.isEmpty()) {
 			throw new EmptyResultDataAccessException("No Record Found", 1);
 		}
@@ -119,6 +119,15 @@ public class NotificationService {
 		mimeMessageHelper.setReplyTo(emailId);
 		mimeMessageHelper.setTo(emailId);
 		javaMailSender.send(message);
+	}
+
+	public List<NotificationDto> getNotificationDetailsForUser(String userId) {
+		List<Notification> list = notificationRepository.findByUserId(userId);
+		if (list == null || list.isEmpty()) {
+			throw new EmptyResultDataAccessException("No Record Found", 1);
+		}
+		return mapper.getBOList(list);
+
 	}
 
 }
