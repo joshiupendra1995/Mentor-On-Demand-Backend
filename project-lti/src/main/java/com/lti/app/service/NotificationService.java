@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -126,7 +127,7 @@ public class NotificationService {
 		if (list == null || list.isEmpty()) {
 			throw new EmptyResultDataAccessException("No Record Found", 1);
 		}
-		return mapper.getBOList(list);
+		return mapper.getBOList(list).stream().filter(NotificationDto::isFlag).collect(Collectors.toList());
 
 	}
 
