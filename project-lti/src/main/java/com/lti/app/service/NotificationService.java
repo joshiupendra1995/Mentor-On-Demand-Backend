@@ -24,12 +24,9 @@ import com.lti.app.mapper.NotificationMapper;
 import com.lti.app.model.Notification;
 import com.lti.app.repository.NotificationRepository;
 
-import freemarker.core.ParseException;
 import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 
 @Service
 public class NotificationService {
